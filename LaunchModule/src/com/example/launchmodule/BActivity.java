@@ -1,0 +1,53 @@
+package com.example.launchmodule;
+
+import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+public class BActivity extends ActionBarActivity {
+
+	private TextView tv;
+	public static final String action = "myActivityB";
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_b);
+		tv = (TextView) findViewById(R.id.tv);
+		tv.setText(String.format("TaskId=%d \n Activity=%s",getTaskId(),toString()));
+		
+		findViewById(R.id.bntStartA).setOnClickListener(new View.OnClickListener() {
+			public void onClick(View a) {
+				startActivity(new Intent(BActivity.this,MainActivity.class));
+			}
+		});
+		findViewById(R.id.bntStartB).setOnClickListener(new View.OnClickListener() {
+			public void onClick(View a) {
+				startActivity(new Intent(action));
+			}
+		});
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.b, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+}
