@@ -1,0 +1,43 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class ServerServlet extends HttpServlet {
+ 
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException { 
+		this.doPost(request, response); 
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("----post");
+		request.setCharacterEncoding("UTF-8");
+		String queryName=request.getParameter("queryName");
+		String queryNumber = request.getParameter("queryNumber");
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		
+		System.out.println(queryName);
+		System.out.println(queryNumber);
+		/**
+		 * 查询业务，数据库查询成绩单，使用学号和姓名，如果有该人则返回其成绩，如若没有则返回无此人
+		 * 使用response 写回调用方查询结果
+		 */
+		try{
+			
+		} finally {
+			if(out != null)
+				out.close();
+		}
+		
+	}
+ 
+}

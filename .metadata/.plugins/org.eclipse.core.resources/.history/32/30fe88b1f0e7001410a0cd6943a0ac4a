@@ -1,0 +1,67 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
+import mysql.MysqlConn;
+
+
+public class InsertServlet extends HttpServlet {
+ 
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("----post");
+		request.setCharacterEncoding("UTF-8"); 
+		String info = request.getParameter("Info");
+		JSONObject object = new JSONObject().fromObject("info");
+		String Sname = object.getString("Sname");
+		String Number = object.getString("Number");
+		String 
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		
+		Connection conn = MysqlConn.getConnection();
+		if(conn != null)
+		{
+			try{ 
+				Statement stmt = conn.createStatement();
+				set = stmt.executeQuery("select * from stu where name=\'"+queryName+"\'and number=\'"+queryNumber+"\'");
+				while (set.next()) {  
+					list.append(set.getString("db"));
+					list.append(',');
+					list.append(set.getString("system"));
+					list.append(',');
+					list.append(set.getString("complier"));
+					list.append(','); 
+					list.append(set.getString("net"));
+					}   
+				System.out.println(list.toString().split(","));
+				out.print(list.toString());
+				System.out.println("连接成功！");
+				}
+				catch(SQLException e){
+					e.printStackTrace();
+				}
+		}
+		else
+		{
+			System.out.println("连接失败！");
+		} 
+		
+		System.out.println(queryName);
+		System.out.println(queryNumber);
+		/**
+		 * 查询业务，数据库查询成绩单，使用学号和姓名，如果有该人则返回其成绩，如若没有则返回无此人
+		 * 使用response 写回调用方查询结果
+		 */ 
+	}
+
+}

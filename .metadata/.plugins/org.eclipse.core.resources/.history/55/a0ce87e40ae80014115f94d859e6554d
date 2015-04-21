@@ -1,0 +1,126 @@
+package com.example.scorequrey;
+
+import java.lang.ref.WeakReference;
+ 
+
+import net.sf.json.JSONObject;
+import Service.UserServiceImp;
+import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class BActivity extends ActionBarActivity {
+
+	private EditText ed1;
+	private EditText ed2;
+	private EditText ed3;
+	private EditText ed4;
+	private EditText ed5;
+	private EditText ed6;
+	private Button bnt;
+	UserServiceImp service = new UserServiceImp(); 
+	private static ProgressDialog dialog;
+	String list = new String();
+	JSONObject json = new JSONObject();
+	 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_b); 
+		ed1 = (EditText) findViewById(R.id.editText1);
+		ed2 = (EditText) findViewById(R.id.editText2);
+		ed3 = (EditText) findViewById(R.id.editText3);
+		ed4 = (EditText) findViewById(R.id.editText4); 
+		ed5 = (EditText) findViewById(R.id.editText5);
+		ed6 = (EditText) findViewById(R.id.editText6);
+		
+		
+		
+		findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {  
+				json.put("Sname",ed1.getText().toString());
+				json.put("Number", ed2.getText().toString());
+				json.put("Database",ed3.getText().toString());
+				json.put("System", ed4.getText().toString());
+				json.put("Net", ed5.getText().toString());
+				json.put("Complier",ed6.getText().toString()); 
+				
+				if(dialog == null) {
+					dialog = new ProgressDialog(BActivity.this); 
+				}
+	 
+				dialog.setTitle("请等待");
+				dialog.setMessage("正在新建。。。");
+				dialog.setCancelable(false);
+				dialog.show(); 
+		 
+				/**
+				 * 副线程
+				 */ 
+				Thread thread = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {  
+						try {
+							list = service.userNew(json);
+							if(list == "success")
+								handler.sendEmptyMessage(1);	//
+							else handler.sendEmptyMessage(0);
+						} catch (Exception e) {
+							e.printStackTrace();
+							Message msg = new Message();
+							Bundle data = new Bundle();
+							data.putSerializable("ErrorMsg","新建失敗");
+							msg.setData(data);
+							handler.sendMessage(msg); 
+							
+						}
+					}
+				}); 
+				thread.start();  
+				} 
+			}); 
+		}
+		private void showTip(String str) {
+			Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+		}
+		private class IHandler extends Handler {
+			private final WeakReference<Activity> mActivity;
+			
+			public IHandler(BActivity activity) {
+				mActivity = new WeakReference<Activity>(activity);
+			}
+			public void handleMessage(Message msg) {
+				if(dialog != null) {
+					dialog.dismiss();
+				}
+				int flag = msg.what;
+				switch(flag) {
+				case 0:
+					String erroMsgString = (String)msg.getData().getSerializable("ErrorMsg");
+					((BActivity)mActivity.get()).showTip("新建失敗");
+					break;
+				case 1:	  
+					((BActivity)mActivity.get()).showTip("新建成功");
+					break; 
+				default:
+					break;
+				}
+			}
+		}  
+		IHandler handler = new IHandler(BActivity.this); 
+}

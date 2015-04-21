@@ -1,0 +1,53 @@
+package Service;
+
+import java.security.PublicKey;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import com.example.scorequrey.MainActivity;
+
+import android.util.Log;
+
+public class UserServiceImp implements UserService {
+
+	@Override
+	public List<String> userQuery(String queryName, String queryNumber) throws Exception {
+		System.out.println("query");
+		List<String> list = null;
+		Log.d("userservice", queryName);
+		Log.d("userservice", queryNumber);
+
+		HttpClient client = new DefaultHttpClient();
+
+		System.out.print("aaaa");
+		String uri = "http://172.17.154.173:8080/ServerData/servlet/ServerServlet?queryName="
+				+ queryName + "&queryNumber=" + queryNumber;
+		System.out.println(uri);
+		HttpGet get = new HttpGet(uri);
+		
+		System.out.print("1"); 
+		//响应
+		HttpResponse response = client.execute(get);
+		//HTTP响应码
+		
+		int statusCode = response.getStatusLine().getStatusCode();
+		System.out.print("2");
+		if(statusCode != HttpStatus.SC_OK) { 
+			System.out.println("请求服务器错误");
+		}
+		list = (List<String>) response.getEntity();
+		System.out.println('2');
+		System.out.println(list.toString());
+		String resultString = EntityUtils.toString(response.getEntity(),"UTF-8");
+		System.out.println(resultString);
+		if(list == null) return null;
+		else return list; 
+	}
+
+}

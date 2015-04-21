@@ -1,6 +1,6 @@
 package com.example.contextlearn;
 
-import android.app.Application;
+import android.app.Application; 
 
 public class App extends Application{
 	private String textData = "DaisyDong";
@@ -10,6 +10,13 @@ public class App extends Application{
 	}
 	public String getTextData() {
 		return this.textData;
+	}
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		super.onCreate();
+		
+		System.out.println("app create");
 	}
 
 }

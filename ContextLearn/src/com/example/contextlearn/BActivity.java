@@ -18,14 +18,14 @@ public class BActivity extends Activity{
 		tv = (TextView) findViewById(R.id.tv);
 		et = (EditText) findViewById(R.id.et);
 
-		tv.setText(((App)getApplicationContext()).getTextData());
+		tv.setText(((App)getApplicationContext()).getTextData());	//获取共享数据
 		
 		findViewById(R.id.bntSave).setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				((App)getApplicationContext()).setTextData(et.getText().toString()); 
+				((App)getApplicationContext()).setTextData(et.getText().toString());	//设置共享数据 
 				tv.setText(((App)getApplicationContext()).getTextData());
 			}
 		});

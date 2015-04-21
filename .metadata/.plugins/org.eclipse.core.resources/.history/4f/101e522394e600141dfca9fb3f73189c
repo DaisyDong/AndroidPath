@@ -1,0 +1,14 @@
+package Service;
+
+import java.security.PublicKey;
+
+public class UserServiceImp implements UserService{
+
+	@Override
+	public void userQuery(String queryName, String queryNumber)
+			throws Exception { 
+		
+	}
+	
+	
+}

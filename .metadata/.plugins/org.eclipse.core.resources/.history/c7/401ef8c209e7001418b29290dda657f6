@@ -1,0 +1,32 @@
+package Service;
+
+import java.security.PublicKey;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.example.scorequrey.MainActivity;
+
+import android.util.Log;
+
+public class UserServiceImp implements UserService {
+
+	@Override
+	public void userQuery(String queryName, String queryNumber)
+			throws Exception {
+		Log.d("userservice", queryName);
+		Log.d("userservice", queryNumber);
+
+		HttpClient client = new DefaultHttpClient();
+
+		String uri = "http://172.17.154.173:8080/ServerData/servlet/ServerServlet?queryName="
+				+ queryName + "&queryNumber=" + queryNumber;
+		HttpGet get = new HttpGet(uri);
+		
+		HttpResponse response = client.execute(get);
+		
+	}
+
+}

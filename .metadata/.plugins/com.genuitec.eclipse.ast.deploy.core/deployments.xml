@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<deployments>
+  <deployment context-root="/ServerData" deployment-path="E:/Android/andriodProject/.metadata/.me_tcat7/webapps/ServerData" project-name="ServerData" server-id="myeclipseTomcatServer7" state="DEPLOYED" type="WEB"/>
+</deployments>
